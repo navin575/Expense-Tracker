@@ -11,32 +11,27 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const app = express();
 
 connectDB();
-// Dynamic CORS function to handle production, local development, and Vercel preview links
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      
-      const allowedPatterns = [
-        /^http:\/\/localhost:\d+$/,                          // Matches http://localhost:5173, etc.
-        /^https:\/\/expense-trackez\.vercel\.app$/,          // Matches your main production URL
-        /^https:\/\/expense-tracker-.*-navinmohan575-6079s-projects\.vercel\.app$/ // 🚀 Matches ALL your Vercel preview/deployment URLs
-      ];
-
-      const isAllowed = allowedPatterns.some((pattern) => pattern.test(origin));
-
-      if (isAllowed) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+      // 1. Allow local development or requests with no origin (like Postman or mobile apps)
+      if (!origin || origin.startsWith("http://localhost:")) {
+        return callback(null, true);
       }
+
+      // 2. Allow ANY domain that ends with .vercel.app
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      // 3. Otherwise, block it
+      return callback(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
-);  
+);
 
 
 app.use(express.json());
