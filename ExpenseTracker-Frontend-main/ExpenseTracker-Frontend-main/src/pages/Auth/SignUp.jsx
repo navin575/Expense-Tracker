@@ -20,7 +20,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   //Handle Sign Up Form Submit
- const handleSignUp = async (e) => { 
+ const handleSignUp = async (e) => {
   e.preventDefault();
 
   if (!fullName) {
@@ -41,60 +41,38 @@ const SignUp = () => {
   setError("");
 
   try {
-    const formData = new FormData();
-    formData.append("fullName", fullName);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("profileImage", profilePic); // ✅ this must match multer name
+    let profileImageUrl = "";
 
-    // "https://expensetracker-backend-r3l8.onrender.com/api/v1/auth/register"
-
-    const response = await fetch("https://expense-tracker-8ho5.onrender.com ", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      setError(data.message || "Something went wrong!");
-      return;
+    // Upload image if selected
+    if (profilePic) {
+      const imgUploadRes = await uploadImage(profilePic);
+      profileImageUrl = imgUploadRes.imageUrl || "";
     }
 
-    // ✅ Navigate or show success message
-    navigate("/login");
-  } catch (err) {
-    console.error(err);
-    setError("Something went wrong. Please try again.");
-  }
+    // Register user
+    const response = await axiosInstance.post(
+      API_PATHS.AUTH.REGISTER,
+      {
+        fullName,
+        email,
+        password,
+        profileImageUrl,
+      }
+    );
 
-  //signUp API call
-  try{
+    const { token, user } = response.data;
 
-    //upload image if present
-    if(profilePic){
-      const imgUploadRes=await uploadImage(profilePic);
-      profileImageUrl=imgUploadRes.imageUrl || "";
-    }
-
-    const response=await axiosInstance.post(API_PATHS.AUTH.REGISTER,{
-      fullName,
-      email,
-      password,
-      profileImageUrl
-    });
-
-    const {token,user}=response.data;
-    if(token){
-      localStorage.setItem("token",token);
+    if (token) {
+      localStorage.setItem("token", token);
       updateUser(user);
       navigate("/dashboard");
     }
-  } catch(error){
-    if(error.response && error.response.data.message){
+  } catch (error) {
+    console.error(error);
+
+    if (error.response?.data?.message) {
       setError(error.response.data.message);
-    }
-    else{
+    } else {
       setError("Something went wrong. Please try again.");
     }
   }
