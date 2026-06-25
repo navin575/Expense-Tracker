@@ -1,6 +1,15 @@
 // export const BASE_URL = "https://expensetracker-backend-r3l8.onrender.com";
-export const BASE_URL = "http://localhost:8000";
+//export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = "https://expensetracker-backend-r3l8.onrender.com";
+// export const BASE_URL = "http://localhost:8000";
 
+export const API_PATHS = {
+  AUTH: {
+    LOGIN: `${BASE_URL}/api/v1/auth/login`,
+    REGISTER: `${BASE_URL}/api/v1/auth/register`,
+    GET_USER_INFO: `${BASE_URL}/api/v1/auth/getUser`,
+  },
+// ... keep everything else exactly the same below
 export const API_PATHS = {
   AUTH: {
     LOGIN: `${BASE_URL}/api/v1/auth/login`,
