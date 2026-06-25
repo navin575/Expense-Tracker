@@ -49,7 +49,7 @@ const SignUp = () => {
 
     // "https://expensetracker-backend-r3l8.onrender.com/api/v1/auth/register"
 
-    const response = await fetch("http://localhost:8000/api/v1/auth/register", {
+    const response = await fetch("https://expense-tracker-8ho5.onrender.com", {
       method: "POST",
       body: formData,
     });
