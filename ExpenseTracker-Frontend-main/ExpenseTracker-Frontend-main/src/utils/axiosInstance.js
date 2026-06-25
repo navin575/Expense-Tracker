@@ -4,7 +4,7 @@ import axios from 'axios';
 export const BASE_URL = "https://expense-tracker-8ho5.onrender.com"; 
 
 const axiosInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: "https://expense-tracker-8ho5.onrender.com/", // 👈 Add the trailing slash here
     timeout: 10000, 
     headers: {
         'Content-Type': 'application/json',
