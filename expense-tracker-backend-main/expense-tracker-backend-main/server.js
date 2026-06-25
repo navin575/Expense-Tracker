@@ -14,9 +14,10 @@ connectDB();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173"
+      "http://localhost:5173",
+      "https://expense-trackez.vercel.app", // 🚀 Your exact live production domain
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Added OPTIONS for clean preflight passes
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
