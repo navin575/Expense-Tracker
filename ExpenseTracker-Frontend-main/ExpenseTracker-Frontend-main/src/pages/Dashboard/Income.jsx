@@ -63,7 +63,9 @@ const Income = () => {
 
   const deleteIncome = async (id) => {
     try {
-      await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
+      // 🚀 Changed to static string interpolation:
+      await axiosInstance.delete(`${API_PATHS.INCOME.DELETE_INCOME}/${id}`);
+      
       setOpenDeleteAlert({ show: false, data: null });
       toast.success("Income details deleted successfully");
       fetchIncomeDetails();
